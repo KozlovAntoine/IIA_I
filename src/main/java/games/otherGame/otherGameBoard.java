@@ -45,10 +45,39 @@ public class otherGameBoard implements IBoard<otherGameMove, otherGameRole, othe
 	@Override
 	public ArrayList<otherGameMove> possibleMoves(otherGameRole playerRole) {
 		ArrayList<otherGameMove> allMoves = new ArrayList<>();
-		if(playerRole == otherGameRole.J1) {
-			
-		} else {
-			
+		if(playerRole == otherGameRole.J1) {//tous les coups de J1 se situe pour un move.x entre 0 et 5
+			if(grainesBoardJ2() == 0) {//Si le J2 est en famine on doit OBLIGATOIREMENT jouer un coup qui lui donne une graine
+				int index_arrive = 6;
+				for(int i = 0 ; i < TAILLE / 2 ; i++) {
+					if(board[i] >= index_arrive - i) {
+						allMoves.add(new otherGameMove(i));
+					}
+				}
+			} 
+			else { //Tous les autres coups
+				for(int i = 0 ; i < TAILLE / 2 ; i++) {
+					if(board[i] > 0) {
+						allMoves.add(new otherGameMove(i));
+					}
+				}
+			}
+		} 
+		else {//tous les coups de J2 se situe pour un move.x entre 6 et 11
+			if(grainesBoardJ1() == 0) {//Si le J1 est en famine on doit OBLIGATOIREMENT jouer un coup qui lui donne une graine
+				int index_arrive = 12;
+				for(int i = TAILLE / 2 ; i < TAILLE ; i++) {
+					if(board[i] >= index_arrive - i) {
+						allMoves.add(new otherGameMove(i));
+					}
+				}
+			} 
+			else { //Tous les autres coups
+				for(int i = TAILLE / 2 ; i < TAILLE ; i++) {
+					if(board[i] > 0) {
+						allMoves.add(new otherGameMove(i));
+					}
+				}
+			}
 		}
 		return allMoves;
 	}
@@ -70,11 +99,11 @@ public class otherGameBoard implements IBoard<otherGameMove, otherGameRole, othe
 		if(grainesRestantes() <= 6 || scoreJ1 >= 25 || scoreJ2 >= 25) //La fin par défaut
 			return true;
 		else if(grainesBoardJ1() == 0) {//Si le joueur 1 est en famine alors on ajoute le reste des graines au J2
-			scoreJ2 += grainesRestantes();
+			scoreJ2 += grainesBoardJ2();
 			return true;
 		}
 		else if(grainesBoardJ2() == 0) {//Si le joueur 2 est en famine alors on ajoute le reste des graines au J1
-			scoreJ1 += grainesRestantes();
+			scoreJ1 += grainesBoardJ1();
 			return true;
 		}
 		return false;
