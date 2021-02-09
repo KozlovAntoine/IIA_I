@@ -1,0 +1,38 @@
+games/dominos/DominosBoard.java
+ games.dominos.DominosBoard
+ games.dominos.DominosBoard$SQUARE
+iialib/games/algs/GameAlgorithm.java
+ iialib.games.algs.GameAlgorithm
+iialib/games/algs/algorithms/MiniMax.java
+ iialib.games.algs.algorithms.MiniMax
+iialib/games/model/IRole.java
+ iialib.games.model.IRole
+iialib/games/algs/AbstractGame.java
+ iialib.games.algs.AbstractGame
+games/otherGame/otherGameMove.java
+ games.otherGame.otherGameMove
+iialib/games/model/IMove.java
+ iialib.games.model.IMove
+games/dominos/DominosRole.java
+ games.dominos.DominosRole
+games/otherGame/otherGameBoard.java
+ games.otherGame.otherGameBoard
+iialib/games/algs/IHeuristic.java
+ iialib.games.algs.IHeuristic
+iialib/games/model/Score.java
+ iialib.games.model.Score
+ iialib.games.model.Score$Status
+iialib/games/algs/AIPlayer.java
+ iialib.games.algs.AIPlayer
+iialib/games/model/Player.java
+ iialib.games.model.Player
+games/dominos/DominosHeuristics.java
+ games.dominos.DominosHeuristics
+games/dominos/DominosMove.java
+ games.dominos.DominosMove
+games/dominos/DominosGame.java
+ games.dominos.DominosGame
+games/otherGame/otherGameRole.java
+ games.otherGame.otherGameRole
+iialib/games/model/IBoard.java
+ iialib.games.model.IBoard
