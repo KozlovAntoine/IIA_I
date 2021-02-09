@@ -5,15 +5,13 @@ import iialib.games.model.IMove;
 public class otherGameMove implements IMove {
 	
 	public final int x;
-    public final int y;
     
-    otherGameMove(int x, int y){
+    otherGameMove(int x){
         this.x = x;
-        this.y = y;
     }
 
     @Override
     public String toString() {
-        return "Move{" + x + "," + y + "}";
+        return "Move{" + x + "}";
     }
 }
