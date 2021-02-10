@@ -72,7 +72,7 @@ public class AlphaBeta<Move extends IMove,Role extends IRole,Board extends IBoar
 		int beta = IHeuristic.MAX_VALUE;
 		long start = System.currentTimeMillis();
 		for(Move move : moves) {
-			int tmp = maxMin( board.play(move, playerRole), playerRole , 1, alpha, beta);
+			int tmp = minMax(board.play(move, playerMaxRole), playerMinRole, 1, alpha, beta);
 			if(tmp  > alpha)
 			{
 				alpha = tmp;
@@ -82,6 +82,7 @@ public class AlphaBeta<Move extends IMove,Role extends IRole,Board extends IBoar
 		System.out.println("[AlphaBeta] Temps de calcul : " + (System.currentTimeMillis()-start) + " ms");
 		System.out.println("[AlphaBeta] Nombre de noeuds : " + (nbNodes * 1.0 /1000000.0) + " millions");
 		System.out.println("[AlphaBeta] Nombre de coupe : " + nbLeaves);
+		System.out.println("[AlphaBeta] ALPHA = " + alpha);
 		return bestMove;
 	}
 	
@@ -94,7 +95,7 @@ public class AlphaBeta<Move extends IMove,Role extends IRole,Board extends IBoar
 		else {
 			for(Move move : moves) {
 				alpha = max_successeur(alpha , minMax(board.play(move, playerRole),
-												playerRole , prof + 1, alpha, beta));
+						playerMinRole, prof + 1, alpha, beta));
 				if(alpha >= beta) {
 					nbLeaves++;
 					return beta;
@@ -112,8 +113,8 @@ public class AlphaBeta<Move extends IMove,Role extends IRole,Board extends IBoar
 		}
 		else {
 			for(Move move : moves) {
-				beta = min_successeur(beta , maxMin(board.play(move, playerRole),
-												playerRole , prof + 1, alpha, beta));
+				beta = min_successeur(beta , maxMin(board.play(move, playerRole) ,
+						playerMaxRole , prof + 1, alpha, beta));
 				if(alpha >= beta) {
 					nbLeaves++;
 					return alpha;

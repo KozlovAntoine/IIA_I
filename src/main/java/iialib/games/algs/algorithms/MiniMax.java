@@ -66,20 +66,20 @@ public class MiniMax<Move extends IMove,Role extends IRole,Board extends IBoard<
 
 	@Override
 	public Move bestMove(Board board, Role playerRole) {
-		ArrayList<Move> moves = board.possibleMoves(playerRole);
-		Move bestMove = moves.get(0);
-		int maxtemp = IHeuristic.MIN_VALUE;
+		Move bestMove = board.possibleMoves(playerRole).get(0);
+		int max = IHeuristic.MIN_VALUE;
 		long start = System.currentTimeMillis();
-		for(Move move : moves) {
-			int tmp = maxMin( board.play(move, playerRole), playerRole , 1 );
-			if(tmp  > maxtemp)
-			{
-				maxtemp = tmp;
+		ArrayList<Move> allMoves = board.possibleMoves(playerMaxRole);
+		for(Move move : allMoves) {
+			int tmp = minMax(board.play(move, playerMaxRole), playerMinRole, 1);
+			if(tmp > max) {
+				max = tmp;
 				bestMove = move;
 			}
 		}
 		System.out.println("[MiniMax] Temps de calcul : " + (System.currentTimeMillis() - start) + " ms");
 		System.out.println("[MiniMax] Nombre de noeuds : " + (nbNodes * 1.0 /1000000.0) + " millions");
+		System.out.println("[MiniMax] H = " + max);
 		return bestMove;
 	}
 	
@@ -108,9 +108,13 @@ public class MiniMax<Move extends IMove,Role extends IRole,Board extends IBoard<
 		}
 		else {
 			int max = IHeuristic.MIN_VALUE;
+			int tmp;
 			for(Move move : moves) {
-				max = max_successeur(max , minMax(board.play(move, playerRole),
-												playerRole , prof + 1));
+				tmp = minMax(board.play(move, playerRole),
+						playerMinRole, prof + 1);
+				if(tmp > max){
+					max = tmp;
+				}
 			}
 			return max;
 		}
@@ -125,9 +129,13 @@ public class MiniMax<Move extends IMove,Role extends IRole,Board extends IBoard<
 		}
 		else {
 			int min = IHeuristic.MAX_VALUE;
+			int tmp;
 			for(Move move : moves) {
-				min = min_successeur(min , maxMin(board.play(move, playerRole) ,
-												playerRole , prof + 1));
+				tmp = maxMin(board.play(move, playerRole) ,
+						playerMaxRole , prof + 1);
+				if(tmp < min) {
+					min = tmp;
+				}
 			}
 			return min;
 		}

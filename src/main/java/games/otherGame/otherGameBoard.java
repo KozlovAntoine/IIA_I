@@ -45,6 +45,9 @@ public class otherGameBoard implements IBoard<otherGameMove, otherGameRole, othe
 	@Override
 	public ArrayList<otherGameMove> possibleMoves(otherGameRole playerRole) {
 		ArrayList<otherGameMove> allMoves = new ArrayList<>();
+		/*
+		JOUEUR 1
+		*/
 		if(playerRole == otherGameRole.J1) {//tous les coups de J1 se situe pour un move.x entre 0 et 5
 			if(grainesBoardJ2() == 0) {//Si le J2 est en famine on doit OBLIGATOIREMENT jouer un coup qui lui donne une graine
 				int index_arrive = 6;
@@ -62,6 +65,9 @@ public class otherGameBoard implements IBoard<otherGameMove, otherGameRole, othe
 				}
 			}
 		} 
+		/*
+		JOUEUR 2
+		*/
 		else {//tous les coups de J2 se situe pour un move.x entre 6 et 11
 			if(grainesBoardJ1() == 0) {//Si le J1 est en famine on doit OBLIGATOIREMENT jouer un coup qui lui donne une graine
 				int index_arrive = 12;

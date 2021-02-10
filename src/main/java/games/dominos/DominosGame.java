@@ -20,13 +20,10 @@ public class DominosGame extends AbstractGame<DominosMove, DominosRole, DominosB
 		DominosRole roleH = DominosRole.HORIZONTAL;
 
 		GameAlgorithm<DominosMove, DominosRole, DominosBoard> algV = new MiniMax<DominosMove, DominosRole, DominosBoard>(
-				roleV, roleH, DominosHeuristics.hVertical, 4); // Minimax depth 4
+				roleV, roleH, DominosHeuristics.hVertical, 2); // Minimax depth 4
 		
-		GameAlgorithm<DominosMove, DominosRole, DominosBoard> algH = new AlphaBeta<DominosMove, DominosRole, DominosBoard>(
-				roleV, roleH, DominosHeuristics.hHorizontal, 8); // Minimax depth 4
-
-		/*GameAlgorithm<DominosMove, DominosRole, DominosBoard> algH = new MiniMax<DominosMove, DominosRole, DominosBoard>(
-				roleH, roleV, DominosHeuristics.hHorizontal, 4); // Minimax depth 2 */
+		GameAlgorithm<DominosMove, DominosRole, DominosBoard> algH = new MiniMax<DominosMove, DominosRole, DominosBoard>(
+				roleH, roleV, DominosHeuristics.hHorizontal, 2); // Minimax depth 4
 
 		AIPlayer<DominosMove, DominosRole, DominosBoard> playerV = new AIPlayer<DominosMove, DominosRole, DominosBoard>(
 				roleV, algV);
@@ -36,8 +33,8 @@ public class DominosGame extends AbstractGame<DominosMove, DominosRole, DominosB
 
 		ArrayList<AIPlayer<DominosMove, DominosRole, DominosBoard>> players = new ArrayList<AIPlayer<DominosMove, DominosRole, DominosBoard>>();
 		
-		players.add(playerH); 
-		players.add(playerV);
+		players.add(playerV); 
+		players.add(playerH);
 
 		// Setting the initial Board
 		DominosBoard initialBoard = new DominosBoard();

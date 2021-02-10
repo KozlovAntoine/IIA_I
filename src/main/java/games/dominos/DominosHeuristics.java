@@ -6,28 +6,29 @@ public class DominosHeuristics {
 	
 	public static IHeuristic<DominosBoard,DominosRole>  hVertical = (board,role) -> {
 		int verticaux = board.nbVerticalMoves();
-		int horizontal = board.nbHorizontalMoves();
+		int horizontaux = board.nbHorizontalMoves();
 		
-		if(horizontal == 0) {
+		System.out.println("[hVertical] Verticaux = " + verticaux + " | Horizontaux = " + horizontaux + " role "+role + "\n"+board.toString());
+		if(horizontaux == 0) {
 			return IHeuristic.MAX_VALUE;
 		}
 		else if (verticaux == 0) {
 			return IHeuristic.MIN_VALUE;
 		}
-		return horizontal - verticaux;
+		return verticaux - horizontaux;
     };
     
 	public static IHeuristic<DominosBoard,DominosRole> hHorizontal = (board,role) -> {
 		int verticaux = board.nbVerticalMoves();
-		int horizontal = board.nbHorizontalMoves();
-		
+		int horizontaux = board.nbHorizontalMoves();
+		System.out.println("[hVertical] Verticaux = " + verticaux + " | Horizontaux = " + horizontaux + " role "+role + "\n"+board.toString());
 		if(verticaux == 0) {
 			return IHeuristic.MAX_VALUE;
 		}
-		else if (horizontal == 0) {
+		else if (horizontaux == 0) {
 			return IHeuristic.MIN_VALUE;
 		}
-		return verticaux - horizontal;
+		return horizontaux - verticaux;
 	};
    
 }
