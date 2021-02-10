@@ -90,7 +90,9 @@ public class AlphaBeta<Move extends IMove,Role extends IRole,Board extends IBoar
 		ArrayList<Move> moves = board.possibleMoves(playerRole);
 		nbNodes += moves.size();
 		if(prof == depthMax || estFeuille(moves)) {
-			return h.eval(board,(Role) playerRole);
+			int eval = h.eval(board,(Role) playerMaxRole);
+			//System.out.println("MaxMin = " + eval);
+			return eval;
 		}
 		else {
 			for(Move move : moves) {
@@ -109,7 +111,9 @@ public class AlphaBeta<Move extends IMove,Role extends IRole,Board extends IBoar
 		ArrayList<Move> moves = board.possibleMoves(playerRole);
 		nbNodes += moves.size();
 		if(prof == depthMax || estFeuille(moves)) {
-			return h.eval(board,(Role) playerRole);
+			int eval = h.eval(board,(Role) playerMinRole);
+			//System.out.println("MinMax = " + eval);
+			return eval;
 		}
 		else {
 			for(Move move : moves) {

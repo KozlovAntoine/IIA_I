@@ -104,7 +104,7 @@ public class MiniMax<Move extends IMove,Role extends IRole,Board extends IBoard<
 		ArrayList<Move> moves = board.possibleMoves(playerRole);
 		nbNodes += moves.size();
 		if(prof == depthMax || estFeuille(moves)) {
-			return h.eval(board,(Role) playerRole);
+			return h.eval(board,(Role) playerMaxRole);
 		}
 		else {
 			int max = IHeuristic.MIN_VALUE;
@@ -125,7 +125,7 @@ public class MiniMax<Move extends IMove,Role extends IRole,Board extends IBoard<
 		ArrayList<Move> moves = board.possibleMoves(playerRole);
 		nbNodes += moves.size();
 		if(prof == depthMax || estFeuille(moves)) {
-			return h.eval(board,(Role) playerRole);
+			return h.eval(board,(Role) playerMinRole);
 		}
 		else {
 			int min = IHeuristic.MAX_VALUE;
