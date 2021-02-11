@@ -13,6 +13,8 @@ public class DominosGame extends AbstractGame<DominosMove, DominosRole, DominosB
 	DominosGame(ArrayList<AIPlayer<DominosMove, DominosRole, DominosBoard>> players, DominosBoard board) {
 		super(players, board);
 	}
+	
+	// test
 
 	public static void main(String[] args) {
 
