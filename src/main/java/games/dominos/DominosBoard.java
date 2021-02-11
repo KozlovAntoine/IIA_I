@@ -87,7 +87,6 @@ public class DominosBoard implements IBoard<DominosMove, DominosRole, DominosBoa
 		return (boardGrid[x][y] == SQUARE.EMPTY)
 				&& ((playerRole == DominosRole.VERTICAL) ? (boardGrid[x + 1][y] == SQUARE.EMPTY)
 						: (boardGrid[x][y + 1] == SQUARE.EMPTY));
-
 	}
 
 	@Override

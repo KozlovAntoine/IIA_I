@@ -30,6 +30,8 @@ public class otherGameBoard implements IBoard<otherGameMove, otherGameRole, othe
 	
 	public otherGameBoard(otherGameBoard other) {
 		board = other.copyBoard();
+		scoreJ1 = other.scoreJ1;
+		scoreJ2 = other.scoreJ2;
 	}
 	
 	private int[] copyBoard() {
@@ -90,7 +92,12 @@ public class otherGameBoard implements IBoard<otherGameMove, otherGameRole, othe
 
 	@Override
 	public otherGameBoard play(otherGameMove move, otherGameRole playerRole) {
-		// TODO Auto-generated method stub
+		int[] newBoard = new int[TAILLE];
+		int graines = board[move.x];
+		int index = move.x;
+		while(graines > 0) {
+			
+		}
 		return null;
 	}
 
@@ -170,6 +177,28 @@ public class otherGameBoard implements IBoard<otherGameMove, otherGameRole, othe
 			total += board[i];
 		}
 		return total;
+	}
+	
+	//Si le J2 joue un coup qui peut enlever toutes les graines de J1 alors ce coup peut etre jouer mais les graines ne sont pas enlevé
+	private boolean peutEnleverSurJ1() {
+		int i = 0;
+		while (i < TAILLE / 2) {
+			if(board[i] < 2 || board[i] > 3)
+				return true;
+			i++;
+		}
+		return false;
+	}
+	
+	//Si le J1 joue un coup qui peut enlever toutes les graines de J2 alors ce coup peut etre jouer mais les graines ne sont pas enlevé
+	private boolean peutEnleverSurJ2() {
+		int i = TAILLE / 2;
+		while (i < TAILLE) {
+			if(board[i] < 2 || board[i] > 3)
+				return true;
+			i++;
+		}
+		return false;
 	}
 	
 }

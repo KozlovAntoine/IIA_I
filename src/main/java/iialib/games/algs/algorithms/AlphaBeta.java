@@ -79,10 +79,12 @@ public class AlphaBeta<Move extends IMove,Role extends IRole,Board extends IBoar
 				bestMove = move;
 			}
 		}
+		System.out.println("-----------------------------------------------------------------------------");
 		System.out.println("[AlphaBeta] Temps de calcul : " + (System.currentTimeMillis()-start) + " ms");
 		System.out.println("[AlphaBeta] Nombre de noeuds : " + (nbNodes * 1.0 /1000000.0) + " millions");
 		System.out.println("[AlphaBeta] Nombre de coupe : " + nbLeaves);
 		System.out.println("[AlphaBeta] ALPHA = " + alpha);
+		System.out.println("-----------------------------------------------------------------------------");
 		return bestMove;
 	}
 	
@@ -90,7 +92,7 @@ public class AlphaBeta<Move extends IMove,Role extends IRole,Board extends IBoar
 		ArrayList<Move> moves = board.possibleMoves(playerRole);
 		nbNodes += moves.size();
 		if(prof == depthMax || estFeuille(moves)) {
-			int eval = h.eval(board,(Role) playerMaxRole);
+			int eval = h.eval(board,(Role) playerMaxRole, prof);
 			//System.out.println("MaxMin = " + eval);
 			return eval;
 		}
@@ -111,7 +113,7 @@ public class AlphaBeta<Move extends IMove,Role extends IRole,Board extends IBoar
 		ArrayList<Move> moves = board.possibleMoves(playerRole);
 		nbNodes += moves.size();
 		if(prof == depthMax || estFeuille(moves)) {
-			int eval = h.eval(board,(Role) playerMinRole);
+			int eval = h.eval(board,(Role) playerMinRole, prof);
 			//System.out.println("MinMax = " + eval);
 			return eval;
 		}
