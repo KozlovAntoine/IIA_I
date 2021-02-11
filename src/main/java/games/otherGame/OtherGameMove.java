@@ -2,11 +2,11 @@ package games.otherGame;
 
 import iialib.games.model.IMove;
 
-public class otherGameMove implements IMove {
+public class OtherGameMove implements IMove {
 	
 	public final int x;
     
-    otherGameMove(int x){
+    OtherGameMove(int x){
         this.x = x;
     }
 

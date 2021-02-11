@@ -8,19 +8,22 @@ import java.util.ArrayList;
 
 import games.dominos.DominosRole;
 
-public class otherGameBoard implements IBoard<otherGameMove, otherGameRole, otherGameBoard> {
+public class OtherGameBoard implements IBoard<OtherGameMove, OtherGameRole, OtherGameBoard> {
 
 
+	// ----------------------Constantes----------------------
+	
+	public static final int TAILLE = 12;
 
 	// ---------------------- Attributes ---------------------
 	// Attributes
 
 	//TODO
-	private final int TAILLE = 12;
+	
 	private int[] board;
 	private int scoreJ1, scoreJ2;
 	
-	public otherGameBoard() {
+	public OtherGameBoard() {
 		board = new int[TAILLE];
 		for(int i = 0 ; i < TAILLE ; i++) { //On initialise le board avec 4 graines dans chaque 'trous'
 			board[i] = 4;
@@ -28,13 +31,13 @@ public class otherGameBoard implements IBoard<otherGameMove, otherGameRole, othe
 		scoreJ1 = 0; scoreJ2 = 0;
 	}
 	
-	public otherGameBoard(otherGameBoard other) {
+	public OtherGameBoard(OtherGameBoard other) {
 		board = other.copyBoard();
 		scoreJ1 = other.scoreJ1;
 		scoreJ2 = other.scoreJ2;
 	}
 	
-	public otherGameBoard(int[] tab, int scoreJ1, int scoreJ2) {
+	public OtherGameBoard(int[] tab, int scoreJ1, int scoreJ2) {
 		int[] tmp = new int[TAILLE];
 		for(int i = 0 ; i < TAILLE ; i++) {
 			tmp[i] = tab[i];
@@ -55,24 +58,24 @@ public class otherGameBoard implements IBoard<otherGameMove, otherGameRole, othe
 	// --------------------- IBoard Methods ---------------------
 
 	@Override
-	public ArrayList<otherGameMove> possibleMoves(otherGameRole playerRole) {
-		ArrayList<otherGameMove> allMoves = new ArrayList<>();
+	public ArrayList<OtherGameMove> possibleMoves(OtherGameRole playerRole) {
+		ArrayList<OtherGameMove> allMoves = new ArrayList<>();
 		/*
 		JOUEUR 1
 		*/
-		if(playerRole == otherGameRole.J1) {//tous les coups de J1 se situe pour un move.x entre 0 et 5
+		if(playerRole == OtherGameRole.J1) {//tous les coups de J1 se situe pour un move.x entre 0 et 5
 			if(grainesBoardJ2() == 0) {//Si le J2 est en famine on doit OBLIGATOIREMENT jouer un coup qui lui donne une graine
 				int index_arrive = 6;
 				for(int i = 0 ; i < TAILLE / 2 ; i++) {
 					if(board[i] >= index_arrive - i) {
-						allMoves.add(new otherGameMove(i));
+						allMoves.add(new OtherGameMove(i));
 					}
 				}
 			} 
 			else { //Tous les autres coups
 				for(int i = 0 ; i < TAILLE / 2 ; i++) {
 					if(board[i] > 0) {
-						allMoves.add(new otherGameMove(i));
+						allMoves.add(new OtherGameMove(i));
 					}
 				}
 			}
@@ -85,14 +88,14 @@ public class otherGameBoard implements IBoard<otherGameMove, otherGameRole, othe
 				int index_arrive = 12;
 				for(int i = TAILLE / 2 ; i < TAILLE ; i++) {
 					if(board[i] >= index_arrive - i) {
-						allMoves.add(new otherGameMove(i));
+						allMoves.add(new OtherGameMove(i));
 					}
 				}
 			} 
 			else { //Tous les autres coups
 				for(int i = TAILLE / 2 ; i < TAILLE ; i++) {
 					if(board[i] > 0) {
-						allMoves.add(new otherGameMove(i));
+						allMoves.add(new OtherGameMove(i));
 					}
 				}
 			}
@@ -101,7 +104,7 @@ public class otherGameBoard implements IBoard<otherGameMove, otherGameRole, othe
 	}
 
 	@Override
-	public otherGameBoard play(otherGameMove move, otherGameRole playerRole) {
+	public OtherGameBoard play(OtherGameMove move, OtherGameRole playerRole) {
 		int[] newBoard = copyBoard();
 		int graines = newBoard[move.x];
 		int index = move.x;
@@ -117,7 +120,8 @@ public class otherGameBoard implements IBoard<otherGameMove, otherGameRole, othe
 			if(index == TAILLE)
 				index = 0;
 		}
-		if(playerRole == otherGameRole.J1 && peutEnleverSurJ2()) {
+		// Tour de j1
+		if(playerRole == OtherGameRole.J1 && peutEnleverSurJ2()) {
 			//entre 11 et 6 on peut enlever les graines
 			while(index >= TAILLE / 2 && (newBoard[index] == 2 || newBoard[index] == 3)) {
 				scoreJ1 += newBoard[index];
@@ -125,18 +129,20 @@ public class otherGameBoard implements IBoard<otherGameMove, otherGameRole, othe
 				index--;
 			}
 		}
-		else if(playerRole == otherGameRole.J2 && peutEnleverSurJ1()) {
+		// Tour de j2
+		else if(playerRole == OtherGameRole.J2 && peutEnleverSurJ1()) {
 			while(index < TAILLE / 2 && index >= 0 && (newBoard[index] == 2 || newBoard[index] == 3)) {
 				scoreJ2 += newBoard[index];
 				newBoard[index] = 0;
 				index--;
 			}
 		}
-		return new otherGameBoard(newBoard, scoreJ1, scoreJ2);
+		
+		return new OtherGameBoard(newBoard, scoreJ1, scoreJ2);
 	}
 
 	@Override
-	public boolean isValidMove(otherGameMove move, otherGameRole playerRole) {
+	public boolean isValidMove(OtherGameMove move, OtherGameRole playerRole) {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -157,20 +163,20 @@ public class otherGameBoard implements IBoard<otherGameMove, otherGameRole, othe
 	}
 
 	@Override
-	public ArrayList<Score<otherGameRole>> getScores() {
-		ArrayList<Score<otherGameRole>> scores = new ArrayList<Score<otherGameRole>>();
+	public ArrayList<Score<OtherGameRole>> getScores() {
+		ArrayList<Score<OtherGameRole>> scores = new ArrayList<Score<OtherGameRole>>();
 		if(this.isGameOver()) {
 			if (scoreJ1 == scoreJ2) { //Egalité
-				scores.add(new Score<otherGameRole>(otherGameRole.J1,Score.Status.TIE,scoreJ1));
-				scores.add(new Score<otherGameRole>(otherGameRole.J2,Score.Status.TIE,scoreJ2));
+				scores.add(new Score<OtherGameRole>(OtherGameRole.J1,Score.Status.TIE,scoreJ1));
+				scores.add(new Score<OtherGameRole>(OtherGameRole.J2,Score.Status.TIE,scoreJ2));
 			}
 			else if(scoreJ1 > scoreJ2){ //J1 gagne
-				scores.add(new Score<otherGameRole>(otherGameRole.J1,Score.Status.WIN,scoreJ1));
-				scores.add(new Score<otherGameRole>(otherGameRole.J2,Score.Status.LOOSE,scoreJ2));
+				scores.add(new Score<OtherGameRole>(OtherGameRole.J1,Score.Status.WIN,scoreJ1));
+				scores.add(new Score<OtherGameRole>(OtherGameRole.J2,Score.Status.LOOSE,scoreJ2));
 			}
 			else { //J2 gagne
-				scores.add(new Score<otherGameRole>(otherGameRole.J1,Score.Status.LOOSE,scoreJ1));
-				scores.add(new Score<otherGameRole>(otherGameRole.J2,Score.Status.WIN,scoreJ2));
+				scores.add(new Score<OtherGameRole>(OtherGameRole.J1,Score.Status.LOOSE,scoreJ1));
+				scores.add(new Score<OtherGameRole>(OtherGameRole.J2,Score.Status.WIN,scoreJ2));
 			}
 		}
 		else {
@@ -234,5 +240,33 @@ public class otherGameBoard implements IBoard<otherGameMove, otherGameRole, othe
 		}
 		return false;
 	}
+	
+	/* getters and setters */
+	
+	public int[] getBoard() {
+		return board;
+	}
+	
+	public int getScoreJ1() {
+		return scoreJ1;
+	}
+	
+	public int getScoreJ2() {
+		return scoreJ2;
+	}
+	
+	
+	public int nbMoves(OtherGameRole role) {
+		return possibleMoves(role).size();
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 }
