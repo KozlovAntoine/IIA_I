@@ -34,6 +34,16 @@ public class otherGameBoard implements IBoard<otherGameMove, otherGameRole, othe
 		scoreJ2 = other.scoreJ2;
 	}
 	
+	public otherGameBoard(int[] tab, int scoreJ1, int scoreJ2) {
+		int[] tmp = new int[TAILLE];
+		for(int i = 0 ; i < TAILLE ; i++) {
+			tmp[i] = tab[i];
+		}
+		this.board = tmp;
+		this.scoreJ1 = scoreJ1;
+		this.scoreJ2 = scoreJ2;
+	}
+	
 	private int[] copyBoard() {
 		int[] tmp = new int[TAILLE];
 		for(int i = 0 ; i < TAILLE ; i++) {
@@ -92,13 +102,37 @@ public class otherGameBoard implements IBoard<otherGameMove, otherGameRole, othe
 
 	@Override
 	public otherGameBoard play(otherGameMove move, otherGameRole playerRole) {
-		int[] newBoard = new int[TAILLE];
-		int graines = board[move.x];
+		int[] newBoard = copyBoard();
+		int graines = newBoard[move.x];
 		int index = move.x;
+		final int index_depart = move.x;
+		newBoard[index_depart] = 0;
 		while(graines > 0) {
-			
+			if(index != index_depart) {
+				newBoard[index] += 1;
+				graines --;
+			}
+			if(graines > 0) //quand il n'y a plus de graines on s'arrete
+				index++;
+			if(index == TAILLE)
+				index = 0;
 		}
-		return null;
+		if(playerRole == otherGameRole.J1 && peutEnleverSurJ2()) {
+			//entre 11 et 6 on peut enlever les graines
+			while(index >= TAILLE / 2 && (newBoard[index] == 2 || newBoard[index] == 3)) {
+				scoreJ1 += newBoard[index];
+				newBoard[index] = 0;
+				index--;
+			}
+		}
+		else if(playerRole == otherGameRole.J2 && peutEnleverSurJ1()) {
+			while(index < TAILLE / 2 && index >= 0 && (newBoard[index] == 2 || newBoard[index] == 3)) {
+				scoreJ2 += newBoard[index];
+				newBoard[index] = 0;
+				index--;
+			}
+		}
+		return new otherGameBoard(newBoard, scoreJ1, scoreJ2);
 	}
 
 	@Override
