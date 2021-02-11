@@ -25,7 +25,7 @@ public class OtherGameMain extends AbstractGame<OtherGameMove, OtherGameRole, Ot
 		OtherGameRole roleJ2 = OtherGameRole.J2;
 
 		GameAlgorithm<OtherGameMove, OtherGameRole, OtherGameBoard> algoJ1 = new MiniMax<OtherGameMove, OtherGameRole, OtherGameBoard>(
-				roleJ1, roleJ2, OtherGameHeuristics.playerBottom, 4); // Minimax depth 4
+				roleJ1, roleJ2, OtherGameHeuristics.playerBottom, 8); // Minimax depth 4
 		
 		GameAlgorithm<OtherGameMove, OtherGameRole, OtherGameBoard> algoJ2 = new MiniMax<OtherGameMove, OtherGameRole, OtherGameBoard>(
 				roleJ2, roleJ1, OtherGameHeuristics.playerTop, 4); // Minimax depth 4

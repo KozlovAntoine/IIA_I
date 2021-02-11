@@ -260,13 +260,30 @@ public class OtherGameBoard implements IBoard<OtherGameMove, OtherGameRole, Othe
 		return possibleMoves(role).size();
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	@Override
+	public String toString() {
+		String res = "J2 : ";
+		for(int cpt = TAILLE - 1 ; cpt >= TAILLE / 2; cpt--) {
+			res += "|";
+			if(board[cpt] <= 9) { // si nombre avec un chiffre
+				res += " ";
+			}
+			if(cpt != (OtherGameBoard.TAILLE / 2))
+				res += board[cpt];
+			else 
+				res += board[cpt] + "|";
+		}
+		res += "\nJ1 : ";
+		for(int cpt = 0; cpt < OtherGameBoard.TAILLE / 2 ; cpt++) {
+			res += "|";
+			if(board[cpt] < 9) { // si nombre avec un chiffre
+				res += " ";
+			}
+			if(cpt != (OtherGameBoard.TAILLE / 2) - 1) 
+				res += board[cpt];
+			else
+				res += board[cpt] + "|";
+		}
+		return res + "\n Score J1 = " + scoreJ1 + " | J2 = " + scoreJ2;
+	}
 }
