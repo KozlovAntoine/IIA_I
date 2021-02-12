@@ -311,7 +311,6 @@ public class OtherGameBoard implements IBoard<OtherGameMove, OtherGameRole, Othe
 		return tmp;
 	}
 	
-	
 	public int nbMoves(OtherGameRole role) {
 		return possibleMoves(role).size();
 	}
@@ -341,16 +340,6 @@ public class OtherGameBoard implements IBoard<OtherGameMove, OtherGameRole, Othe
 				res += board[cpt] + "|";
 		}
 		return res + "\n Score J1 = " + scoreJ1 + " | J2 = " + scoreJ2;
-	}
-	
-	private void ajouteScoreJ1(int point) {
-		System.out.println("ON AJOUTE " + point + " points au J1");
-		this.scoreJ1 += point;
-	}
-	
-	private void ajouteScoreJ2(int point) {
-		System.out.println("ON AJOUTE " + point + " points au J2");
-		this.scoreJ2 += point;
 	}
 	
 	private boolean J1peutNourrirJ2() {

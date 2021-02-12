@@ -13,9 +13,9 @@ import iialib.games.algs.GameAlgorithm;
 import iialib.games.algs.algorithms.AlphaBeta;
 import iialib.games.algs.algorithms.MiniMax;
 
-public class OtherGameMain extends AbstractGame<OtherGameMove, OtherGameRole, OtherGameBoard> {
+public class ABvsMM extends AbstractGame<OtherGameMove, OtherGameRole, OtherGameBoard> {
 
-	OtherGameMain(ArrayList<AIPlayer<OtherGameMove, OtherGameRole, OtherGameBoard>> players, OtherGameBoard board) {
+	ABvsMM(ArrayList<AIPlayer<OtherGameMove, OtherGameRole, OtherGameBoard>> players, OtherGameBoard board) {
 		super(players, board);
 	}
 
@@ -45,7 +45,7 @@ public class OtherGameMain extends AbstractGame<OtherGameMove, OtherGameRole, Ot
 		// Setting the initial Board
 		OtherGameBoard initialBoard = new OtherGameBoard();
 
-		OtherGameMain game = new OtherGameMain(players, initialBoard);
+		ABvsMM game = new ABvsMM(players, initialBoard);
 		game.runGame();
 		
 	}

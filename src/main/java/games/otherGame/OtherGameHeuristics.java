@@ -2,6 +2,7 @@ package games.otherGame;
 
 import java.util.ArrayList;
 
+import games.dominos.DominosRole;
 import iialib.games.algs.IHeuristic;
 
 public class OtherGameHeuristics {
@@ -15,14 +16,12 @@ public class OtherGameHeuristics {
 		/* variables courrantes pour evaluer l'heuristic*/
 		
 		/* verifier si l'un des joueurs a perdu */
-		if(board.nbMoves(role) == 0) {
-			if(role == OtherGameRole.J2) // (Joueur top)
-				return IHeuristic.MIN_VALUE;
-			else                         // (Joueur bottom)
-				return IHeuristic.MAX_VALUE; 
+		if(board.isGameOver()) {
+			if(board.getScoreJ2() >= board.getScoreJ1())
+				return IHeuristic.MAX_VALUE - prof;
+			else return IHeuristic.MIN_VALUE;
 		}
 		else {
-
 			// sinon stratégie de base : retourner le nombre de pierre du joueur  - nombre de pierre du joueur adv ET prendre en compte le score
 			int score =  board.nbMoves(OtherGameRole.J2) - board.nbMoves(OtherGameRole.J1);
 			if(role == OtherGameRole.J2)
@@ -47,12 +46,10 @@ public class OtherGameHeuristics {
 	 * Heuristic pour jouer en bas index 0 - 5
 	 * */
 	public static IHeuristic<OtherGameBoard, OtherGameRole>  playerBottom = (board,role,prof) -> {
-		
-		if(board.nbMoves(role) == 0) {
-			if(role == OtherGameRole.J1) // (Joueur bottom)
-				return IHeuristic.MAX_VALUE;
-			else                         // (Joueur top)
-				return IHeuristic.MIN_VALUE; 
+		if(board.isGameOver()) {
+			if(board.getScoreJ2() >= board.getScoreJ1())
+				return IHeuristic.MAX_VALUE - prof;
+			else return IHeuristic.MIN_VALUE;
 		}
 		else {
 

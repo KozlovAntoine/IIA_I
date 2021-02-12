@@ -13,9 +13,9 @@ import iialib.games.algs.GameAlgorithm;
 import iialib.games.algs.algorithms.AlphaBeta;
 import iialib.games.algs.algorithms.MiniMax;
 
-public class OtherGameMain extends AbstractGame<OtherGameMove, OtherGameRole, OtherGameBoard> {
+public class MMvsAB extends AbstractGame<OtherGameMove, OtherGameRole, OtherGameBoard> {
 
-	OtherGameMain(ArrayList<AIPlayer<OtherGameMove, OtherGameRole, OtherGameBoard>> players, OtherGameBoard board) {
+	MMvsAB(ArrayList<AIPlayer<OtherGameMove, OtherGameRole, OtherGameBoard>> players, OtherGameBoard board) {
 		super(players, board);
 	}
 
@@ -25,10 +25,10 @@ public class OtherGameMain extends AbstractGame<OtherGameMove, OtherGameRole, Ot
 		OtherGameRole roleJ1 = OtherGameRole.J1;
 		OtherGameRole roleJ2 = OtherGameRole.J2;
 
-		GameAlgorithm<OtherGameMove, OtherGameRole, OtherGameBoard> algoJ1 = new AlphaBeta<OtherGameMove, OtherGameRole, OtherGameBoard>(
+		GameAlgorithm<OtherGameMove, OtherGameRole, OtherGameBoard> algoJ1 = new MiniMax<OtherGameMove, OtherGameRole, OtherGameBoard>(
 				roleJ1, roleJ2, OtherGameHeuristics.playerBottom, 4); // Minimax depth 4
 		
-		GameAlgorithm<OtherGameMove, OtherGameRole, OtherGameBoard> algoJ2 = new MiniMax<OtherGameMove, OtherGameRole, OtherGameBoard>(
+		GameAlgorithm<OtherGameMove, OtherGameRole, OtherGameBoard> algoJ2 = new AlphaBeta<OtherGameMove, OtherGameRole, OtherGameBoard>(
 				roleJ2, roleJ1, OtherGameHeuristics.playerTop, 4); // Minimax depth 4
 
 		AIPlayer<OtherGameMove, OtherGameRole, OtherGameBoard> playerJ1 = new AIPlayer<OtherGameMove, OtherGameRole, OtherGameBoard>(
@@ -45,7 +45,7 @@ public class OtherGameMain extends AbstractGame<OtherGameMove, OtherGameRole, Ot
 		// Setting the initial Board
 		OtherGameBoard initialBoard = new OtherGameBoard();
 
-		OtherGameMain game = new OtherGameMain(players, initialBoard);
+		MMvsAB game = new MMvsAB(players, initialBoard);
 		game.runGame();
 		
 	}
