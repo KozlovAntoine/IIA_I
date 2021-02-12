@@ -1,8 +1,5 @@
 package games.otherGame;
 
-import java.util.ArrayList;
-
-import games.dominos.DominosRole;
 import iialib.games.algs.IHeuristic;
 
 public class OtherGameHeuristicsJeremy {
@@ -61,29 +58,14 @@ public class OtherGameHeuristicsJeremy {
 				}	
 			}
 			int resultpierre;
-			if(role == OtherGameRole.J1) {
-				resultpierre = (int) (nb2PierreJ2 * COEF_2PIERRES + nb3PierreJ2 * COEF_3PIERRES - nb2PierreJ1  * COEF_2PIERRES- nb3PierreJ1 * COEF_3PIERRES);  
-				if(resultpierre > 0 && current_board[5] > 3)
-					resultpierre *= 10 * current_board[5];
-			}
-			else {
-				resultpierre = (int) (nb2PierreJ1 * COEF_2PIERRES + nb3PierreJ1 * COEF_3PIERRES - nb2PierreJ2  * COEF_2PIERRES- nb3PierreJ2 * COEF_3PIERRES);  
-				if(resultpierre > 0 && current_board[11] > 3)
-					resultpierre *= 2 * current_board[11];
-			}
+			resultpierre = (int) (nb2PierreJ1 * COEF_2PIERRES + nb3PierreJ1 * COEF_3PIERRES - nb2PierreJ2  * COEF_2PIERRES- nb3PierreJ2 * COEF_3PIERRES);  
+			if(resultpierre > 0 && current_board[11] > 3)
+				resultpierre *= 2 * current_board[11];
+			
 			score_heuristic += resultpierre;
 			
-			/* Prise en compte du score */
+			score_heuristic += (board.getScoreJ2() - board.getScoreJ1()) * 20;
 			
-			if(role == OtherGameRole.J1) {
-				score_heuristic += (board.getScoreJ1() - board.getScoreJ2()) * 20;
-			}
-			else {
-				score_heuristic += (board.getScoreJ2() - board.getScoreJ1()) * 20;
-			}
-			
-			
-			// heuristic COUP_CRITIQUE
 			return score_heuristic;
 			
 		}
@@ -141,26 +123,16 @@ public class OtherGameHeuristicsJeremy {
 					}
 				}
 			}
-			if(role == OtherGameRole.J1) {
-				resultpierre = (int) (nb2PierreJ2 * COEF_2PIERRES + nb3PierreJ2 * COEF_3PIERRES - nb2PierreJ1  * COEF_2PIERRES- nb3PierreJ1 * COEF_3PIERRES);  
-				if(resultpierre > 0 && current_board[5] > 3)
-					resultpierre *= 10 * current_board[5];
-			}
-			else {
-				resultpierre = (int) (nb2PierreJ1 * COEF_2PIERRES + nb3PierreJ1 * COEF_3PIERRES - nb2PierreJ2  * COEF_2PIERRES- nb3PierreJ2 * COEF_3PIERRES);  
-				if(resultpierre > 0 && current_board[11] > 3)
-					resultpierre *= 2 * current_board[11];
-			}
+			resultpierre = (int) (nb2PierreJ2 * COEF_2PIERRES + nb3PierreJ2 * COEF_3PIERRES - nb2PierreJ1  * COEF_2PIERRES- nb3PierreJ1 * COEF_3PIERRES);  
+			if(resultpierre > 0 && current_board[5] > 3)
+				resultpierre *= 10 * current_board[5];
+			
 			score_heuristic += resultpierre;
 			
 			/* Prise en compte du score */
 			
-			if(role == OtherGameRole.J1) {
-				score_heuristic += (board.getScoreJ1() - board.getScoreJ2()) * 20;
-			}
-			else {
-				score_heuristic += (board.getScoreJ2() - board.getScoreJ1()) * 20;
-			}
+			score_heuristic += (board.getScoreJ1() - board.getScoreJ2()) * 20;
+			
 			
 			return score_heuristic;
 		}
