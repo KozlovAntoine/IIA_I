@@ -10,6 +10,7 @@ import games.dominos.DominosRole;
 import iialib.games.algs.AIPlayer;
 import iialib.games.algs.AbstractGame;
 import iialib.games.algs.GameAlgorithm;
+import iialib.games.algs.algorithms.AlphaBeta;
 import iialib.games.algs.algorithms.MiniMax;
 
 public class OtherGameMain extends AbstractGame<OtherGameMove, OtherGameRole, OtherGameBoard> {
@@ -24,11 +25,11 @@ public class OtherGameMain extends AbstractGame<OtherGameMove, OtherGameRole, Ot
 		OtherGameRole roleJ1 = OtherGameRole.J1;
 		OtherGameRole roleJ2 = OtherGameRole.J2;
 
-		GameAlgorithm<OtherGameMove, OtherGameRole, OtherGameBoard> algoJ1 = new MiniMax<OtherGameMove, OtherGameRole, OtherGameBoard>(
-				roleJ1, roleJ2, OtherGameHeuristics.playerBottom, 8); // Minimax depth 4
+		GameAlgorithm<OtherGameMove, OtherGameRole, OtherGameBoard> algoJ1 = new AlphaBeta<OtherGameMove, OtherGameRole, OtherGameBoard>(
+				roleJ1, roleJ2, OtherGameHeuristics.playerBottom, 14); // Minimax depth 4
 		
 		GameAlgorithm<OtherGameMove, OtherGameRole, OtherGameBoard> algoJ2 = new MiniMax<OtherGameMove, OtherGameRole, OtherGameBoard>(
-				roleJ2, roleJ1, OtherGameHeuristics.playerTop, 4); // Minimax depth 4
+				roleJ2, roleJ1, OtherGameHeuristics.playerTop, 2); // Minimax depth 4
 
 		AIPlayer<OtherGameMove, OtherGameRole, OtherGameBoard> playerJ1 = new AIPlayer<OtherGameMove, OtherGameRole, OtherGameBoard>(
 				roleJ1, algoJ1);

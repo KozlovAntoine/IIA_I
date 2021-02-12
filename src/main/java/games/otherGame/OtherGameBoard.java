@@ -23,8 +23,6 @@ public class OtherGameBoard implements IBoard<OtherGameMove, OtherGameRole, Othe
 	private int[] board;
 	private int scoreJ1;
 	private int scoreJ2;
-	//Besoin de savoir le joueur actuel pour terminer la partie s'il n'a plus de graine dans sa partie
-	private OtherGameRole joueurActuel;
 	
 	public OtherGameBoard() {
 		board = new int[TAILLE];
@@ -32,14 +30,12 @@ public class OtherGameBoard implements IBoard<OtherGameMove, OtherGameRole, Othe
 			board[i] = 4;
 		}
 		this.scoreJ1 = 0; this.scoreJ2 = 0;
-		this.joueurActuel = OtherGameRole.J1;
 	}
 	
 	public OtherGameBoard(OtherGameBoard other) {
 		this.board = other.copyBoard();
 		this.scoreJ1 = other.scoreJ1;
 		this.scoreJ2 = other.scoreJ2;
-		this.joueurActuel = other.joueurActuel;
 	}
 	
 	private int[] copyBoard() {
@@ -100,64 +96,99 @@ public class OtherGameBoard implements IBoard<OtherGameMove, OtherGameRole, Othe
 
 	@Override
 	public OtherGameBoard play(OtherGameMove move, OtherGameRole playerRole) {
+		/**
+		 * Création d'un nouveau jeu qui est une copie du celui actuel
+		 */
 		OtherGameBoard newBoard = new OtherGameBoard(this);
+		
+		/**
+		 * On recupere le nombre de graine a la case x
+		 * On garde l'index de depart pour sauter la case si on repasse dessus
+		 * On vide la case a l'index de depart
+		 */
 		int graines = newBoard.board[move.x];
-		int index = move.x;
 		final int index_depart = move.x;
+		int index = index_depart;
 		newBoard.board[index_depart] = 0;
+		
+		/**
+		 * Tant qu'on a des graines, on avance d'une case et on ajoute une graine dans la case
+		 */
 		while(graines > 0) {
 			if(index != index_depart) {
 				newBoard.board[index] += 1;
 				graines --;
 			}
-			if(graines > 0) //quand il n'y a plus de graines on s'arrete
+			if(graines > 0) //quand il n'y a plus de graines on s'arrete et on garde l'index
 				index++;
-			if(index == TAILLE)
+			if(index == TAILLE) //l'index revient au départ s'il dépasse
 				index = 0;
 		}
-		// Tour de j1
+		
+		/*
+		 * Si le Joueur 1 joue
+		 * On peut enlever des graines si le coup n'enleve pas toutes les graines adverses
+		 */
 		if(playerRole == OtherGameRole.J1 && peutEnleverSurJ2(index)) {
-			//entre 11 et 6 on peut enlever les graines
+			/*
+			 * Tant qu'on reste dans la partie adverse on peut enlever les graines
+			 * des cases si celle ci à 2 ou 3 graines dessus
+			 */
 			while(index >= TAILLE / 2 && (newBoard.board[index] == 2 || newBoard.board[index] == 3)) {
 				newBoard.scoreJ1 += newBoard.board[index];
 				newBoard.board[index] = 0;
 				index--;
 			}
 		}
-		// Tour de j2
+		/*
+		 * Si le Joueur 2 joue
+		 * On peut enlever des graines si le coup n'enleve pas toutes les graines adverses
+		 */
 		else if(playerRole == OtherGameRole.J2 && peutEnleverSurJ1(index)) {
+			/*
+			 * Tant qu'on reste dans la partie adverse on peut enlever les graines
+			 * des cases si celle ci à 2 ou 3 graines dessus
+			 */
 			while(index < TAILLE / 2 && index >= 0 && (newBoard.board[index] == 2 || newBoard.board[index] == 3)) {
 				newBoard.scoreJ2 += newBoard.board[index];
 				newBoard.board[index] = 0;
 				index--;
 			}
 		}
-		if(this.joueurActuel == OtherGameRole.J1) {
-			newBoard.joueurActuel = OtherGameRole.J2;
-		} 
-		else newBoard.joueurActuel = OtherGameRole.J1;
 		return newBoard;
 	}
 
 	@Override
 	public boolean isValidMove(OtherGameMove move, OtherGameRole playerRole) {
+		/*
+		 * Un coup est jouable s'il y a des graines dans la case X et
+		 * doit nourrir le joueur adverse s'il n'a plus de graine dans son camp
+		 */
+		
+		/**
+		 * Joueur 1
+		 */
 		if(playerRole == OtherGameRole.J1 && move.x >= 0 && move.x < TAILLE / 2 && board[move.x] > 0) {
-			if(grainesBoardJ2() > 0) {
+			if(grainesBoardJ2() > 0) { //coup normal | J1 a des graines
 				return true;
-			} else { //nourir le J2 obligatoire
+			} else { //nourrir le J2 obligatoire
 				final int index_arrive = 6;
-				if(board[move.x] >= index_arrive - move.x) {
+				if(board[move.x] >= index_arrive - move.x) { //ce coup peut nourrir J2 | J2 n'a pas de graines
 					return true;
 				} 
 				else return false;
 			}
 		}
+		
+		/**
+		 * Joueur 2
+		 */
 		else if(playerRole == OtherGameRole.J2 && move.x >= TAILLE / 2 && move.x < TAILLE && board[move.x] > 0) {
-			if(grainesBoardJ1() > 0) {
+			if(grainesBoardJ1() > 0) { //coup normal | J1 a des graines
 				return true;
-			} else { //nourir le J obligatoire
+			} else { //nourrir le J1 obligatoire
 				final int index_arrive = 12;
-				if(board[move.x] >= index_arrive - move.x) {
+				if(board[move.x] >= index_arrive - move.x) { //ce coup peut nourrir J1 | J1 n'a pas de graines
 					return true;
 				} 
 				else return false;
