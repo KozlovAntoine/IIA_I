@@ -21,30 +21,25 @@ public class OtherGameBoard implements IBoard<OtherGameMove, OtherGameRole, Othe
 	//TODO
 	
 	private int[] board;
-	private int scoreJ1, scoreJ2;
+	private int scoreJ1;
+	private int scoreJ2;
+	//Besoin de savoir le joueur actuel pour terminer la partie s'il n'a plus de graine dans sa partie
+	private OtherGameRole joueurActuel;
 	
 	public OtherGameBoard() {
 		board = new int[TAILLE];
 		for(int i = 0 ; i < TAILLE ; i++) { //On initialise le board avec 4 graines dans chaque 'trous'
 			board[i] = 4;
 		}
-		scoreJ1 = 0; scoreJ2 = 0;
+		this.scoreJ1 = 0; this.scoreJ2 = 0;
+		this.joueurActuel = OtherGameRole.J1;
 	}
 	
 	public OtherGameBoard(OtherGameBoard other) {
-		board = other.copyBoard();
-		scoreJ1 = other.scoreJ1;
-		scoreJ2 = other.scoreJ2;
-	}
-	
-	public OtherGameBoard(int[] tab, int scoreJ1, int scoreJ2) {
-		int[] tmp = new int[TAILLE];
-		for(int i = 0 ; i < TAILLE ; i++) {
-			tmp[i] = tab[i];
-		}
-		this.board = tmp;
-		this.scoreJ1 = scoreJ1;
-		this.scoreJ2 = scoreJ2;
+		this.board = other.copyBoard();
+		this.scoreJ1 = other.scoreJ1;
+		this.scoreJ2 = other.scoreJ2;
+		this.joueurActuel = other.joueurActuel;
 	}
 	
 	private int[] copyBoard() {
@@ -105,14 +100,14 @@ public class OtherGameBoard implements IBoard<OtherGameMove, OtherGameRole, Othe
 
 	@Override
 	public OtherGameBoard play(OtherGameMove move, OtherGameRole playerRole) {
-		int[] newBoard = copyBoard();
-		int graines = newBoard[move.x];
+		OtherGameBoard newBoard = new OtherGameBoard(this);
+		int graines = newBoard.board[move.x];
 		int index = move.x;
 		final int index_depart = move.x;
-		newBoard[index_depart] = 0;
+		newBoard.board[index_depart] = 0;
 		while(graines > 0) {
 			if(index != index_depart) {
-				newBoard[index] += 1;
+				newBoard.board[index] += 1;
 				graines --;
 			}
 			if(graines > 0) //quand il n'y a plus de graines on s'arrete
@@ -121,29 +116,53 @@ public class OtherGameBoard implements IBoard<OtherGameMove, OtherGameRole, Othe
 				index = 0;
 		}
 		// Tour de j1
-		if(playerRole == OtherGameRole.J1 && peutEnleverSurJ2()) {
+		if(playerRole == OtherGameRole.J1 && peutEnleverSurJ2(index)) {
 			//entre 11 et 6 on peut enlever les graines
-			while(index >= TAILLE / 2 && (newBoard[index] == 2 || newBoard[index] == 3)) {
-				scoreJ1 += newBoard[index];
-				newBoard[index] = 0;
+			while(index >= TAILLE / 2 && (newBoard.board[index] == 2 || newBoard.board[index] == 3)) {
+				newBoard.scoreJ1 += newBoard.board[index];
+				newBoard.board[index] = 0;
 				index--;
 			}
 		}
 		// Tour de j2
-		else if(playerRole == OtherGameRole.J2 && peutEnleverSurJ1()) {
-			while(index < TAILLE / 2 && index >= 0 && (newBoard[index] == 2 || newBoard[index] == 3)) {
-				scoreJ2 += newBoard[index];
-				newBoard[index] = 0;
+		else if(playerRole == OtherGameRole.J2 && peutEnleverSurJ1(index)) {
+			while(index < TAILLE / 2 && index >= 0 && (newBoard.board[index] == 2 || newBoard.board[index] == 3)) {
+				newBoard.scoreJ2 += newBoard.board[index];
+				newBoard.board[index] = 0;
 				index--;
 			}
 		}
-		
-		return new OtherGameBoard(newBoard, scoreJ1, scoreJ2);
+		if(this.joueurActuel == OtherGameRole.J1) {
+			newBoard.joueurActuel = OtherGameRole.J2;
+		} 
+		else newBoard.joueurActuel = OtherGameRole.J1;
+		return newBoard;
 	}
 
 	@Override
 	public boolean isValidMove(OtherGameMove move, OtherGameRole playerRole) {
-		// TODO Auto-generated method stub
+		if(playerRole == OtherGameRole.J1 && move.x >= 0 && move.x < TAILLE / 2 && board[move.x] > 0) {
+			if(grainesBoardJ2() > 0) {
+				return true;
+			} else { //nourir le J2 obligatoire
+				final int index_arrive = 6;
+				if(board[move.x] >= index_arrive - move.x) {
+					return true;
+				} 
+				else return false;
+			}
+		}
+		else if(playerRole == OtherGameRole.J2 && move.x >= TAILLE / 2 && move.x < TAILLE && board[move.x] > 0) {
+			if(grainesBoardJ1() > 0) {
+				return true;
+			} else { //nourir le J obligatoire
+				final int index_arrive = 12;
+				if(board[move.x] >= index_arrive - move.x) {
+					return true;
+				} 
+				else return false;
+			}
+		}
 		return false;
 	}
 
@@ -151,11 +170,11 @@ public class OtherGameBoard implements IBoard<OtherGameMove, OtherGameRole, Othe
 	public boolean isGameOver() {
 		if(grainesRestantes() <= 6 || scoreJ1 >= 25 || scoreJ2 >= 25) //La fin par défaut
 			return true;
-		else if(grainesBoardJ1() == 0) {//Si le joueur 1 est en famine alors on ajoute le reste des graines au J2
-			scoreJ2 += grainesBoardJ2();
+		else if(grainesBoardJ1() == 0 && !J2peutNourrirJ1()) {//Si le joueur 1 est en famine alors on ajoute le reste des graines au J2 s'il ne peut pas le nourir
+			this.scoreJ2 += grainesBoardJ2();
 			return true;
 		}
-		else if(grainesBoardJ2() == 0) {//Si le joueur 2 est en famine alors on ajoute le reste des graines au J1
+		else if(grainesBoardJ2() == 0 && !J1peutNourrirJ2()) {//Si le joueur 2 est en famine alors on ajoute le reste des graines au J1 s'il ne peut pas le nourir
 			scoreJ1 += grainesBoardJ1();
 			return true;
 		}
@@ -220,7 +239,9 @@ public class OtherGameBoard implements IBoard<OtherGameMove, OtherGameRole, Othe
 	}
 	
 	//Si le J2 joue un coup qui peut enlever toutes les graines de J1 alors ce coup peut etre jouer mais les graines ne sont pas enlevé
-	private boolean peutEnleverSurJ1() {
+	private boolean peutEnleverSurJ1(int index) {
+		if(index != TAILLE / 2 - 1) //pour enlever toutes les graines il faut arriver sur la derniere case de J1 soit 5
+			return true;
 		int i = 0;
 		while (i < TAILLE / 2) {
 			if(board[i] < 2 || board[i] > 3)
@@ -231,7 +252,9 @@ public class OtherGameBoard implements IBoard<OtherGameMove, OtherGameRole, Othe
 	}
 	
 	//Si le J1 joue un coup qui peut enlever toutes les graines de J2 alors ce coup peut etre jouer mais les graines ne sont pas enlevé
-	private boolean peutEnleverSurJ2() {
+	private boolean peutEnleverSurJ2(int index) {
+		if(index != TAILLE - 1) //pour enlever toutes les graines il faut arriver sur la derniere case de J2 soit 11
+			return true;
 		int i = TAILLE / 2;
 		while (i < TAILLE) {
 			if(board[i] < 2 || board[i] > 3)
@@ -248,11 +271,13 @@ public class OtherGameBoard implements IBoard<OtherGameMove, OtherGameRole, Othe
 	}
 	
 	public int getScoreJ1() {
-		return scoreJ1;
+		int tmp = this.scoreJ1;
+		return tmp;
 	}
 	
 	public int getScoreJ2() {
-		return scoreJ2;
+		int tmp = this.scoreJ2;
+		return tmp;
 	}
 	
 	
@@ -276,7 +301,7 @@ public class OtherGameBoard implements IBoard<OtherGameMove, OtherGameRole, Othe
 		res += "\nJ1 : ";
 		for(int cpt = 0; cpt < OtherGameBoard.TAILLE / 2 ; cpt++) {
 			res += "|";
-			if(board[cpt] < 9) { // si nombre avec un chiffre
+			if(board[cpt] <= 9) { // si nombre avec un chiffre
 				res += " ";
 			}
 			if(cpt != (OtherGameBoard.TAILLE / 2) - 1) 
@@ -286,4 +311,35 @@ public class OtherGameBoard implements IBoard<OtherGameMove, OtherGameRole, Othe
 		}
 		return res + "\n Score J1 = " + scoreJ1 + " | J2 = " + scoreJ2;
 	}
+	
+	private void ajouteScoreJ1(int point) {
+		System.out.println("ON AJOUTE " + point + " points au J1");
+		this.scoreJ1 += point;
+	}
+	
+	private void ajouteScoreJ2(int point) {
+		System.out.println("ON AJOUTE " + point + " points au J2");
+		this.scoreJ2 += point;
+	}
+	
+	private boolean J1peutNourrirJ2() {
+		final int index_arrive = 6;
+		for(int i = 0 ; i < TAILLE / 2 ; i++) {
+			if(board[i] >= index_arrive - i) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	private boolean J2peutNourrirJ1() {
+		final int index_arrive = 12;
+		for(int i = TAILLE / 2 ; i < TAILLE ; i++) {
+			if(board[i] >= index_arrive - i) {
+				return true;
+			}
+		}
+		return false;
+	}
 }
+ 

@@ -2,6 +2,10 @@ package iialib.games.model;
 
 import java.util.ArrayList;
 
+import games.otherGame.OtherGameBoard;
+import games.otherGame.OtherGameMove;
+import games.otherGame.OtherGameRole;
+
 /**
  * Used to chararacterize the boards.he 
  * It has to be impemented by some class in a real game.
