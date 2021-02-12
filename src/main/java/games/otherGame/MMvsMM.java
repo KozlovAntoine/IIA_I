@@ -25,10 +25,10 @@ public class MMvsMM extends AbstractGame<OtherGameMove, OtherGameRole, OtherGame
 		OtherGameRole roleJ1 = OtherGameRole.J1;
 		OtherGameRole roleJ2 = OtherGameRole.J2;
 
-		GameAlgorithm<OtherGameMove, OtherGameRole, OtherGameBoard> algoJ1 = new AlphaBeta<OtherGameMove, OtherGameRole, OtherGameBoard>(
+		GameAlgorithm<OtherGameMove, OtherGameRole, OtherGameBoard> algoJ1 = new MiniMax<OtherGameMove, OtherGameRole, OtherGameBoard>(
 				roleJ1, roleJ2, OtherGameHeuristicsJeremy.playerBottom, 4); // Minimax depth 4
 
-		GameAlgorithm<OtherGameMove, OtherGameRole, OtherGameBoard> algoJ2 = new AlphaBeta<OtherGameMove, OtherGameRole, OtherGameBoard>(
+		GameAlgorithm<OtherGameMove, OtherGameRole, OtherGameBoard> algoJ2 = new MiniMax<OtherGameMove, OtherGameRole, OtherGameBoard>(
 				roleJ2, roleJ1, OtherGameHeuristics.playerTop, 4); // Minimax depth 4
 
 		AIPlayer<OtherGameMove, OtherGameRole, OtherGameBoard> playerJ1 = new AIPlayer<OtherGameMove, OtherGameRole, OtherGameBoard>(
