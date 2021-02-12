@@ -26,10 +26,10 @@ public class ABvsAB extends AbstractGame<OtherGameMove, OtherGameRole, OtherGame
 		OtherGameRole roleJ2 = OtherGameRole.J2;
 
 		GameAlgorithm<OtherGameMove, OtherGameRole, OtherGameBoard> algoJ1 = new AlphaBeta<OtherGameMove, OtherGameRole, OtherGameBoard>(
-				roleJ1, roleJ2, OtherGameHeuristics.playerBottom, 1); // Minimax depth 4
+				roleJ1, roleJ2, OtherGameHeuristics.playerBottom, 4); // Minimax depth 4
 		
 		GameAlgorithm<OtherGameMove, OtherGameRole, OtherGameBoard> algoJ2 = new AlphaBeta<OtherGameMove, OtherGameRole, OtherGameBoard>(
-				roleJ2, roleJ1, OtherGameHeuristics.playerTop, 6); // Minimax depth 4
+				roleJ2, roleJ1, OtherGameHeuristicsJeremy.playerTop, 4); // Minimax depth 4
 
 		AIPlayer<OtherGameMove, OtherGameRole, OtherGameBoard> playerJ1 = new AIPlayer<OtherGameMove, OtherGameRole, OtherGameBoard>(
 				roleJ1, algoJ1);
