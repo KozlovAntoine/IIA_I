@@ -23,6 +23,8 @@ public class OtherGameBoard implements IBoard<OtherGameMove, OtherGameRole, Othe
 	private int[] board;
 	private int scoreJ1;
 	private int scoreJ2;
+	private int lastAddedScoreJ1;
+	private int lastAddedScoreJ2;
 	
 	public OtherGameBoard() {
 		board = new int[TAILLE];
@@ -30,12 +32,16 @@ public class OtherGameBoard implements IBoard<OtherGameMove, OtherGameRole, Othe
 			board[i] = 4;
 		}
 		this.scoreJ1 = 0; this.scoreJ2 = 0;
+		this.lastAddedScoreJ1 = 0;
+		this.lastAddedScoreJ2 = 0;
 	}
 	
 	public OtherGameBoard(OtherGameBoard other) {
 		this.board = other.copyBoard();
 		this.scoreJ1 = other.scoreJ1;
 		this.scoreJ2 = other.scoreJ2;
+		this.lastAddedScoreJ1 = other.lastAddedScoreJ1;
+		this.lastAddedScoreJ2 = other.lastAddedScoreJ2;
 	}
 	
 	private int[] copyBoard() {
@@ -136,6 +142,7 @@ public class OtherGameBoard implements IBoard<OtherGameMove, OtherGameRole, Othe
 			 */
 			while(index >= TAILLE / 2 && (newBoard.board[index] == 2 || newBoard.board[index] == 3)) {
 				newBoard.scoreJ1 += newBoard.board[index];
+				newBoard.lastAddedScoreJ1 = newBoard.board[index];
 				newBoard.board[index] = 0;
 				index--;
 			}
@@ -151,6 +158,7 @@ public class OtherGameBoard implements IBoard<OtherGameMove, OtherGameRole, Othe
 			 */
 			while(index < TAILLE / 2 && index >= 0 && (newBoard.board[index] == 2 || newBoard.board[index] == 3)) {
 				newBoard.scoreJ2 += newBoard.board[index];
+				newBoard.lastAddedScoreJ2 = newBoard.board[index];
 				newBoard.board[index] = 0;
 				index--;
 			}
@@ -360,6 +368,94 @@ public class OtherGameBoard implements IBoard<OtherGameMove, OtherGameRole, Othe
 			}
 		}
 		return false;
+	}
+	
+	public int getLastScoreJ1() {
+		return lastAddedScoreJ1;
+	}
+	
+	public int getLastScoreJ2() {
+		return lastAddedScoreJ2;
+	}
+	
+	public int getMaxPointJ1() {
+		int total = 0;
+		for(int i = TAILLE / 2 ; i < TAILLE ; i++) {
+			if(board[i] == 1 || board[i] == 2) {
+				total += board[i] + 1;
+			}
+		}
+		return total;
+	}
+	
+	public int getMaxPointJ2() {
+		int total = 0;
+		for(int i = 0 ; i < TAILLE / 2; i++) {
+			if(board[i] == 1 || board[i] == 2) {
+				total += board[i] + 1;
+			}
+		}
+		return total;
+	}
+	
+	public int getMaxPointPossibleJ2() {
+		int max = 0;
+		int tmp = 0;
+		int index = 0;
+		for(int i = 0 ; i < TAILLE / 2; i++) {
+			if(board[i] == 1 || board[i] == 2) {
+				tmp += board[i] + 1;
+				if(tmp > max) {
+					max = tmp;
+					index = i;
+				}
+			} 
+			else tmp = 0;
+		}
+		int graines;
+		for(int index_depart = TAILLE / 2 ; index_depart < TAILLE ; index_depart++) {
+			graines = board[index_depart];
+			if(12 + index == index_depart + graines)
+				return max;
+		}
+		return 0;
+	}
+	
+	/*public int getMaxPointPossibleJ1() {
+		int max = 0;
+		int tmp = 0;
+		for(int i = TAILLE / 2 ; i < TAILLE ; i++) {
+			if(board[i] == 1 || board[i] == 2) {
+				tmp += board[i] + 1;
+				if(tmp > max)
+					max = tmp;
+			} 
+			else tmp = 0;
+		}
+		return max;
+	}*/
+	
+	public int getMaxPointPossibleJ1() {
+		int max = 0;
+		int tmp = 0;
+		int index = 0;
+		for(int i = TAILLE / 2 ; i < TAILLE; i++) {
+			if(board[i] == 1 || board[i] == 2) {
+				tmp += board[i] + 1;
+				if(tmp > max) {
+					max = tmp;
+					index = i;
+				}
+			} 
+			else tmp = 0;
+		}
+		int graines;
+		for(int index_depart = 0 ; index_depart < TAILLE / 2; index_depart++) {
+			graines = board[index_depart];
+			if(index == index_depart + graines)
+				return max;
+		}
+		return 0;
 	}
 }
  
