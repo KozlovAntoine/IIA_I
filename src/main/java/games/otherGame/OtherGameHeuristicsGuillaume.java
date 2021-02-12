@@ -7,13 +7,13 @@ import iialib.games.algs.IHeuristic;
 
 public class OtherGameHeuristicsGuillaume {
 	
-	public static final double COEF_SCORE = 1.0;
-
+	public static final double COEF_SCORE1 = 1.0;
+	public static final double COEF_SCORE2 = 14.0;
 	/*
 	 * Heuristic pour jouer en haut index 6 - 11
 	 * */
 	public static IHeuristic<OtherGameBoard, OtherGameRole>  playerTop = (board,role,prof) -> {
-		/* variables courrantes pour evaluer l'heuristic*/
+		/* variables courantes pour evaluer l'heuristic*/
 		
 		/* verifier si l'un des joueurs a perdu */
 		if(board.isGameOver()) {
@@ -25,9 +25,9 @@ public class OtherGameHeuristicsGuillaume {
 			// sinon stratégie de base : retourner le nombre de pierre du joueur  - nombre de pierre du joueur adv ET prendre en compte le score
 			int score =  board.nbMoves(OtherGameRole.J2) - board.nbMoves(OtherGameRole.J1);
 			if(role == OtherGameRole.J2)
-				return score + (int)(board.getScoreJ2()* COEF_SCORE) ;
+				return score - (int)(board.getScoreJ2()* COEF_SCORE1) ;
 			else
-				return score - (int) (board.getScoreJ1() * COEF_SCORE);
+				return score + (int) (board.getScoreJ1() * COEF_SCORE1);
 		}
 		
 		
@@ -54,11 +54,11 @@ public class OtherGameHeuristicsGuillaume {
 		else {
 
 			// sinon stratégie de base : retourner le nombre de pierre du joueur  - nombre de pierre du joueur adv
-			int score =  board.nbMoves(OtherGameRole.J1) - board.nbMoves(OtherGameRole.J1);
+			int score =  board.nbMoves(OtherGameRole.J1) - board.nbMoves(OtherGameRole.J2);
 			if(role == OtherGameRole.J1)
-				return score + board.getScoreJ2();
+				return score - (int)(board.getScoreJ1()* COEF_SCORE2);
 			else
-				return score - board.getScoreJ1();
+				return score + (int)(board.getScoreJ2()* COEF_SCORE2);
 		}
 	};
 	
