@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import games.dominos.DominosRole;
 import iialib.games.algs.IHeuristic;
 
-public class OtherGameHeuristics {
+public class OtherGameHeuristicsAntoine {
 	
 	public static final double COEF_SCORE = 1.0;
 
