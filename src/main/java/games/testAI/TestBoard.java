@@ -9,23 +9,27 @@ public class TestBoard implements IBoard< TestMove, TestRole, TestBoard>{
 
 	/* Constantes */
 	
-	private int[] leaf_values = {1,2,3,4,
-								5,6,7,8,
-								9,10,11,12,
-								13,14,15,16
-								};
+	
+	/* Valeurs prise par l'arbre de gauche a droite */
+	private int[] leaf_values = /* A CHANGER  */{10,11,9,12,
+												14,15,13,14,
+												5,2,4,1,
+												3,22,20,21
+								/* A CHANGER  */};
 	
 	/* Attributs */
 	
 	/* Nombre de coup a joue restant (nombre de noeud a crée)*/
 	private int nbplays;
 	
+	
+	/* curseur des feuilles sur leaf_values */
 	public static int cpt = 0;
 	
 	/* Constructeurs */
 	
 	public TestBoard() {
-		nbplays = 4;
+		nbplays = 3;
 	}
 	
 	public TestBoard(int nbplays) {
@@ -44,9 +48,6 @@ public class TestBoard implements IBoard< TestMove, TestRole, TestBoard>{
 	/* Parcours de l'arbre */
 	@Override
 	public TestBoard play(TestMove move, TestRole playerRole) {
-		if(getNbPlays() == 1) {
-			cpt++;
-		}
 		return new TestBoard(getNbPlays() - 1);
 	}
 
@@ -57,7 +58,7 @@ public class TestBoard implements IBoard< TestMove, TestRole, TestBoard>{
 
 	@Override
 	public boolean isGameOver() {
-		return cpt == 15;
+		return true;
 	}
 
 	@Override
@@ -73,6 +74,10 @@ public class TestBoard implements IBoard< TestMove, TestRole, TestBoard>{
 	
 	public int getNbPlays() {
 		return nbplays;
+	}
+	
+	public int[] getLeafValues() {
+		return leaf_values;
 	}
 
 }
