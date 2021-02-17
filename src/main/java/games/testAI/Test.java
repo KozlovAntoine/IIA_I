@@ -7,6 +7,7 @@ import iialib.games.algs.AbstractGame;
 import iialib.games.algs.GameAlgorithm;
 import iialib.games.algs.algorithms.AlphaBeta;
 import iialib.games.algs.algorithms.MiniMax;
+import iialib.games.algs.algorithms.NegaMax;
 
 /*
  * Classe pour tester les algos
@@ -26,7 +27,7 @@ public class Test extends AbstractGame<TestMove, TestRole, TestBoard> {
 		TestRole RoleAmi = TestRole.Ami;
 		TestRole RoleAdv = TestRole.Adv;
 
-		GameAlgorithm<TestMove, TestRole, TestBoard> algoAmi = new /* A CHANGER  */MiniMax/* A CHANGER  */<TestMove, TestRole, TestBoard>(
+		GameAlgorithm<TestMove, TestRole, TestBoard> algoAmi = new /* A CHANGER  */NegaMax/* A CHANGER  */<TestMove, TestRole, TestBoard>(
 				RoleAmi, RoleAdv, TestHeuristic.feuille, 4);
 
 		

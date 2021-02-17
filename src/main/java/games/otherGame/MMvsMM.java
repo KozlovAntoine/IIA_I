@@ -2,16 +2,12 @@ package games.otherGame;
 
 import java.util.ArrayList;
 
-import games.dominos.DominosBoard;
-import games.dominos.DominosGame;
-import games.dominos.DominosHeuristics;
-import games.dominos.DominosMove;
-import games.dominos.DominosRole;
 import iialib.games.algs.AIPlayer;
 import iialib.games.algs.AbstractGame;
 import iialib.games.algs.GameAlgorithm;
 import iialib.games.algs.algorithms.AlphaBeta;
 import iialib.games.algs.algorithms.MiniMax;
+import iialib.games.algs.algorithms.NegaMax;
 
 public class MMvsMM extends AbstractGame<OtherGameMove, OtherGameRole, OtherGameBoard> {
 
@@ -25,11 +21,11 @@ public class MMvsMM extends AbstractGame<OtherGameMove, OtherGameRole, OtherGame
 		OtherGameRole roleJ1 = OtherGameRole.J1;
 		OtherGameRole roleJ2 = OtherGameRole.J2;
 
-		GameAlgorithm<OtherGameMove, OtherGameRole, OtherGameBoard> algoJ1 = new MiniMax<OtherGameMove, OtherGameRole, OtherGameBoard>(
+		GameAlgorithm<OtherGameMove, OtherGameRole, OtherGameBoard> algoJ1 = new NegaMax<OtherGameMove, OtherGameRole, OtherGameBoard>(
 				roleJ1, roleJ2, OtherGameHeuristicsJeremy.playerBottom, 4); // Minimax depth 4
 
-		GameAlgorithm<OtherGameMove, OtherGameRole, OtherGameBoard> algoJ2 = new MiniMax<OtherGameMove, OtherGameRole, OtherGameBoard>(
-				roleJ2, roleJ1, OtherGameHeuristics.playerTop, 4); // Minimax depth 4
+		GameAlgorithm<OtherGameMove, OtherGameRole, OtherGameBoard> algoJ2 = new NegaMax<OtherGameMove, OtherGameRole, OtherGameBoard>(
+				roleJ2, roleJ1, OtherGameHeuristicsJeremy.playerTop, 4); // Minimax depth 4
 
 		AIPlayer<OtherGameMove, OtherGameRole, OtherGameBoard> playerJ1 = new AIPlayer<OtherGameMove, OtherGameRole, OtherGameBoard>(
 				roleJ1, algoJ1);
